@@ -411,21 +411,22 @@ pub trait Vm {
 
 			pml4.entries[0].set(
 				BOOT_PDPTE as usize,
-				PageTableEntryFlags::PRESENT | PageTableEntryFlags::WRITABLE,
+				PageTableEntryFlags::PRESENT | PageTableEntryFlags::WRITABLE | PageTableEntryFlags::USER_ACCESSIBLE,
 			);
 			pml4.entries[511].set(
 				BOOT_PML4 as usize,
-				PageTableEntryFlags::PRESENT | PageTableEntryFlags::WRITABLE,
+				PageTableEntryFlags::PRESENT | PageTableEntryFlags::WRITABLE | PageTableEntryFlags::USER_ACCESSIBLE,
 			);
 			pdpte.entries[0].set(
 				BOOT_PDE as usize,
-				PageTableEntryFlags::PRESENT | PageTableEntryFlags::WRITABLE,
+				PageTableEntryFlags::PRESENT | PageTableEntryFlags::WRITABLE | PageTableEntryFlags::USER_ACCESSIBLE,
 			);
 
 			for i in 0..511 {
 				pde.entries[i].set(
 					i * LargePageSize::SIZE,
 					PageTableEntryFlags::PRESENT
+                        | PageTableEntryFlags::USER_ACCESSIBLE
 						| PageTableEntryFlags::WRITABLE
 						| PageTableEntryFlags::HUGE_PAGE,
 				);
