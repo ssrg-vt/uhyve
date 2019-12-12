@@ -227,14 +227,14 @@ impl VirtualCPU for UhyveCPU {
 	}
 
 	fn virt_to_phys(&self, addr: usize) -> usize {
-		let executable_disable_mask: usize = !PageTableEntryFlags::EXECUTE_DISABLE.bits();
+		let mask: usize = !(0x1Fusize << 59);
 		let mut page_table = self.host_address(BOOT_PML4 as usize) as *const usize;
 		let mut page_bits = 39;
 		let mut entry: usize = 0;
 
 		for _i in 0..4 {
 			let index = (addr >> page_bits) & ((1 << PAGE_MAP_BITS) - 1);
-			entry = unsafe { *page_table.offset(index as isize) & executable_disable_mask };
+			entry = unsafe { *page_table.offset(index as isize) & mask };
 
 			// bit 7 is set if this entry references a 1 GiB (PDPT) or 2 MiB (PDT) page.
 			if entry & PageTableEntryFlags::HUGE_PAGE.bits() != 0 {
