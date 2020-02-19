@@ -18,7 +18,7 @@ The final step is to create a copy of the repository and to build the kernel:
 
 ```sh
 $ # Get our source code.
-$ git clone git@github.com:hermitcore/uhyve.git
+$ git clone git@github.com:ssrg-vt/uhyve.git
 $ cd uhyve
 
 $ # Get a copy of the Rust source code so we can rebuild core
